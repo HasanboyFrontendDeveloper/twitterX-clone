@@ -74,7 +74,6 @@ const PostItem = ({ post, user, setPosts }: Props) => {
           prev.map((p) => (p._id === post._id ? updatedPost : p))
         );
       } else {
-
         // ADD LIKE
         await axios.put("/api/likes", {
           postId: post._id,
@@ -108,6 +107,11 @@ const PostItem = ({ post, user, setPosts }: Props) => {
     router.push(`/posts/${post._id}`);
   };
 
+  const goToProfile = (evt: any) => {
+    evt.stopPropagation();
+    router.push(`/profile/${post.user._id}`);
+  };
+
   return (
     <div className="border-b-[1px] border-neutral-800 p-5 cursor-pointer hover:bg-neutral-900 transition relative ">
       {isLoading && (
@@ -118,7 +122,7 @@ const PostItem = ({ post, user, setPosts }: Props) => {
         </div>
       )}
       <div className="flex flex-row gap-4" onClick={goToPost}>
-        <Avatar>
+        <Avatar onClick={goToProfile}>
           <AvatarImage src={post.user.profileImage} />
           <AvatarFallback className="uppercase">
             {post.user.name[0]}
@@ -127,11 +131,17 @@ const PostItem = ({ post, user, setPosts }: Props) => {
 
         <div className="">
           <div className="flex flex-row items-center gap-2">
-            <p className="text-white cursor-pointer font-semibold hover:underline">
+            <p
+              className="text-white cursor-pointer font-semibold hover:underline"
+              onClick={goToProfile}
+            >
               {post.user.name}
             </p>
 
-            <span className="text-neutral-500 cursor-pointer hidden md:block hover:underline">
+            <span
+              className="text-neutral-500 cursor-pointer hidden md:block hover:underline"
+              onClick={goToProfile}
+            >
               {post.user.username
                 ? `@${sliceText(post.user.username, 20)}`
                 : sliceText(post.user.email, 20)}

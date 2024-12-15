@@ -19,12 +19,14 @@ import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { AlertCircle } from "lucide-react";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginModal() {
   const [error, setError] = useState("");
 
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
+  const router = useRouter();
 
   const onToggle = useCallback(() => {
     registerModal.onOpen();
@@ -41,11 +43,12 @@ export default function LoginModal() {
 
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
     try {
-      const { data } = await axios.post("api/auth/login", values);
+      const { data } = await axios.post("/api/auth/login", values);
 
       if (data.success) {
         signIn("credentials", values);
         loginModal.onClose();
+        router.push("/");
       }
     } catch (error: any) {
       if (error.response.data.error) {

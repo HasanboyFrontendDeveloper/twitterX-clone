@@ -4,6 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { signOut } from "next-auth/react";
+import { sliceText } from "@/lib/utils";
 
 interface Props {
   user: IUser;
@@ -14,7 +15,10 @@ const SidebarAccount = ({ user }: Props) => {
     <>
       {/* MOBILE SIDEBAR ACCOUNT */}
       <div className="lg:hidden block ">
-        <div className="mt-6 lg:hidden rounded-full h-14 w-14 p-4 flex items-center justify-center bg-red-500 hover:bg-opacity-80 transition cursor-pointer">
+        <div
+          className="mt-6 lg:hidden rounded-full h-14 w-14 p-4 flex items-center justify-center bg-red-500 hover:bg-opacity-80 transition cursor-pointer"
+          onClick={() => signOut()}
+        >
           <RiLogoutCircleLine size={24} color="white" />
         </div>
       </div>
@@ -26,10 +30,12 @@ const SidebarAccount = ({ user }: Props) => {
             <div className="flex gap-2 items-center ">
               <Avatar>
                 <AvatarImage src={user?.profileImage} />
-                <AvatarFallback className="uppercase">{user?.name[0]}</AvatarFallback>
+                <AvatarFallback className="uppercase">
+                  {user?.name[0]}
+                </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start text-white">
-                <p>{user.name}</p>
+                <p>{sliceText(user.name, 16)}</p>
                 {user.username ? (
                   <p className="opacity-40">{user.username}</p>
                 ) : (

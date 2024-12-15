@@ -46,6 +46,10 @@ export const authOptions: AuthOptions = {
       session.currentUser = isExistingUser;
       return session;
     },
+
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
   },
   debug: process.env.NODE_ENV === "development",
   session: { strategy: "jwt" },

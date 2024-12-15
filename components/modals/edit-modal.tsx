@@ -9,6 +9,7 @@ import ProfileImageUpload from "../shared/profile-image-upload";
 import Modal from "../ui/modal";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import EditForm from "../shared/edit-form";
 
 interface Props {
   user: IUser;
@@ -31,7 +32,7 @@ const EditModal = ({ user }: Props) => {
     try {
       setIsLoading(true);
 
-      const req = await axios.put(`/api/users/${user._id}`, {
+      const req = await axios.put(`/api/users/${user._id}?type=updateImage`, {
         [isProfileImage ? "profileImage" : "coverImage"]: image,
       });
       console.log(req);
@@ -60,6 +61,8 @@ const EditModal = ({ user }: Props) => {
         profileImage={profileImage}
         onChange={(image) => handleImageUpload(image, true)}
       />
+
+      <EditForm user={user} />
     </>
   );
 
@@ -68,6 +71,7 @@ const EditModal = ({ user }: Props) => {
       body={bodyConetent}
       isOpen={editModal.isOpen}
       onClose={editModal.onClose}
+      isEditing
     />
   );
 };

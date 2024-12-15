@@ -8,18 +8,14 @@ const UserSchema = new mongoose.Schema(
     password: String,
     coverImage: String,
     profileImage: String,
-    followers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+    location: String,
+    bio: String,
+    hasNewNotifications: Boolean,
+    notifications: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
     ],
-    following: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

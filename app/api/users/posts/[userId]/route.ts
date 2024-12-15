@@ -14,7 +14,9 @@ export async function GET(req: Request, route: { params: { userId: string } }) {
     const { searchParams } = new URL(req.url);
     const limit = searchParams.get("limit");
 
-    const posts = await Post.find({user: route.params.userId})
+    const {userId} = await route.params;
+
+    const posts = await Post.find({ user: userId })
       .populate({
         path: "user",
         model: User,

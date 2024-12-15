@@ -21,6 +21,7 @@ import useLoginModal from "@/hooks/useLoginModal";
 import axios from "axios";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterModal() {
   const [step, setStep] = useState(1);
@@ -155,6 +156,8 @@ function RegisterStep1({
 function RegisterStep2({ data }: { data: { name: string; email: string } }) {
   const registerModal = useRegisterModal();
   const [error, setError] = useState("");
+  const router = useRouter();
+
 
   const form = useForm<z.infer<typeof registerStep2Schema>>({
     resolver: zodResolver(registerStep2Schema),
@@ -181,6 +184,7 @@ function RegisterStep2({ data }: { data: { name: string; email: string } }) {
         })
 
         registerModal.onClose();
+        router.push("/");
       }
 
       console.log(response);

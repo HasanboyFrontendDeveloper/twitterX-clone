@@ -1,5 +1,7 @@
 import Comment from "@/database/comment.model";
+import Notification from "@/database/notification.model";
 import Post from "@/database/post.model";
+import User from "@/database/user.model";
 import { authOptions } from "@/lib/auth-options";
 import { connectToDatabase } from "@/lib/mongoose";
 import { getServerSession } from "next-auth";
@@ -16,10 +18,20 @@ export async function POST(req: Request) {
       post: postId,
       user: userId,
     });
-    await Post.findByIdAndUpdate(
+    const post = await Post.findByIdAndUpdate(
       postId,
       { $push: { comments: comment._id } },
       { new: true }
+    );
+
+    await Notification.create({
+      user: String(post.user),
+      body: "replied on your post!",
+    });
+
+    await User.findOneAndUpdate(
+      { _id: String(post.user) },
+      { $set: { hasNewNotifications: true } }
     );
 
     return NextResponse.json(comment);
@@ -36,9 +48,19 @@ export async function PUT(req: Request) {
     const { currentUser }: any = await getServerSession(authOptions);
     const { commentId } = await req.json();
 
-    await Comment.findByIdAndUpdate(commentId, {
+    const comment = await Comment.findByIdAndUpdate(commentId, {
       $push: { likes: currentUser._id },
     });
+
+    await Notification.create({
+      user: String(comment.user),
+      body: "liked your comment!",
+    });
+
+    await User.findOneAndUpdate(
+      { _id: String(comment.user) },
+      { $set: { hasNewNotifications: true } }
+    );
 
     return NextResponse.json({ message: "Comment liked" });
   } catch (error) {

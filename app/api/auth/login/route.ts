@@ -17,7 +17,10 @@ export async function POST(req: Request) {
       );
     }
 
-    const isPasswordValid = await compare(password, isExistingUser.password);
+    console.log(isExistingUser);
+    
+
+    const isPasswordValid = await compare(password, isExistingUser.password || '');
 
     if (!isPasswordValid) {
       return NextResponse.json(

@@ -10,6 +10,7 @@ import { FaHeart } from "react-icons/fa";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 interface Props {
   comment: IPost;
@@ -94,7 +95,14 @@ const CommentItem = ({ comment, comments, user, setComments }: Props) => {
     }
   };
 
-  const goToPost = () => {};
+  const router = useRouter();
+
+  
+  const goToProfile = (evt: any) => {
+    evt.stopPropagation();
+    router.push(`/profile/${comment.user._id}`);
+  };
+
 
   return (
     <div className="border-b-[1px] border-neutral-800 p-5 cursor-pointer hover:bg-neutral-900 transition relative ">
@@ -105,8 +113,8 @@ const CommentItem = ({ comment, comments, user, setComments }: Props) => {
           </div>
         </div>
       )}
-      <div className="flex flex-row gap-4" onClick={goToPost}>
-        <Avatar>
+      <div className="flex flex-row gap-4">
+        <Avatar onClick={goToProfile} >
           <AvatarImage src={comment.user.profileImage} />
           <AvatarFallback className="uppercase">
             {comment.user.name[0]}
@@ -115,11 +123,11 @@ const CommentItem = ({ comment, comments, user, setComments }: Props) => {
 
         <div className="">
           <div className="flex flex-row items-center gap-2">
-            <p className="text-white cursor-pointer font-semibold hover:underline">
+            <p className="text-white cursor-pointer font-semibold hover:underline" onClick={goToProfile} >
               {comment.user.name}
             </p>
 
-            <span className="text-neutral-500 cursor-pointer hidden md:block hover:underline">
+            <span className="text-neutral-500 cursor-pointer hidden md:block hover:underline" onClick={goToProfile} >
               {comment.user.username
                 ? `@${sliceText(comment.user.username, 20)}`
                 : sliceText(comment.user.email, 20)}

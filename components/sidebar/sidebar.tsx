@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, Home, User } from "lucide-react";
+// import { MdOutlineExplore } from "react-icons/md";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import SidebarItem from "./sidebar-item";
 import SidebarPostButton from "./sidebar-post-button";
 import SidebarAccount from "./sidebar-account";
 import { IUser } from "@/types";
+import { MdOutlineExplore } from "react-icons/md";
 
 const Sidebar = ({ user }: { user: IUser }) => {
   const sidebarItems = [
@@ -20,11 +22,17 @@ const Sidebar = ({ user }: { user: IUser }) => {
       label: "Notifications",
       path: `/notifications/${user?._id}`,
       icon: Bell,
+      notification: user?.hasNewNotifications,
     },
     {
       label: "Profile",
       path: `/profile/${user?._id}`,
       icon: User,
+    },
+    {
+      label: "Explore",
+      path: "/explore",
+      icon: MdOutlineExplore,
     },
   ];
 

@@ -9,8 +9,8 @@ export interface IUser {
   _id: string;
   bio: string;
   location: string;
-  followers: number;
-  following: number;
+  followers: string[];
+  following: string[];
   hasNewNotifications: boolean;
   notifications: string[];
   isFollowing: boolean;
